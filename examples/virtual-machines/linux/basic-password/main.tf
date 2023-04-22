@@ -9,7 +9,8 @@ resource "azurerm_resource_group" "main" {
 
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-network"
-  address_space       = ["10.0.0.0/22"]
+  #resize VNet
+  address_space       = ["10.0.2.0/24"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 }
@@ -55,5 +56,17 @@ resource "azurerm_linux_virtual_machine" "main" {
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
+  }
+}
+
+
+resource "azurerm_public_ip" "main" {
+  name                = "acceptanceTestPublicIp1"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "Test"
   }
 }
