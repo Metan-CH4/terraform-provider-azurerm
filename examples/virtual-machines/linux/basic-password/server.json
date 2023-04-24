@@ -1,0 +1,39 @@
+{
+    "variables": {
+      "client_id": "",
+      "client_secret": "",
+      "subscription_id": ""
+    },
+    "builders": [{
+      "type": "azure-arm",
+   
+      "client_id": "f2134919-9b2b-4b22-a3a2-b3262379d6fc",
+      "client_secret": "4up8Q~U8YSxFjGPk1idO1pUWx2qdEHQwNXo3Tcj7",
+      "subscription_id": "48e3af3a-cc82-4280-bdda-b22f5690beda",
+   
+      "os_type": "Linux",
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "18.04-LTS",
+   
+      "managed_image_resource_group_name": "AzureDevOps_NghiLe",
+      "managed_image_name": "myDemoImage",
+      "build_resource_group_name": "AzureDevOps_NghiLe",
+   
+      "vm_size": "Standard_B1s",
+      "azure_tags": {
+        "env": "test"
+      }
+    }],
+    "provisioners": [{
+      "inline": [
+          "apt-get update",
+          "apt-get upgrade -y",
+          "echo 'Hello, World!' > index.html",
+          "nohup busybox httpd -f -p 80 &" 
+      ],
+      "inline_shebang": "/bin/sh -x",
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+    }]
+  }
